@@ -110,6 +110,7 @@ class PrefsEditor:
 						'zoom_out_all'	   : _('Decrease font size on all terminals'),
 						'zoom_normal_all'  : _('Restore original font size on all terminals'),
                         'new_tab'          : _('Create a new tab'),
+                        'new_browser_tab'  : _('Create a new browser tab'),
                         'cycle_next'       : _('Focus the next terminal'),
                         'cycle_prev'       : _('Focus the previous terminal'),
                         'go_next'          : _('Focus the next terminal'),

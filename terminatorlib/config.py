@@ -130,6 +130,7 @@ DEFAULTS = {
 			'zoom_out_all'	   : '',
 			'zoom_normal_all'  : '',
             'new_tab'          : '<Shift><Control>t',
+            'new_browser_tab'  : '<Shift><Control>b',
             'cycle_next'       : '<Control>Tab',
             'cycle_prev'       : '<Shift><Control>Tab',
             'go_next'          : '<Shift><Control>n',

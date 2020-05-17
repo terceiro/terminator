@@ -295,14 +295,30 @@ class Notebook(Container, Gtk.Notebook):
                    'zoom': top_window.zoom,
                    'maximise': [top_window.zoom, False]}
 
-        if maker.isinstance(widget, 'Terminal'):
-            for signal in signals:
-                args = []
-                handler = signals[signal]
-                if isinstance(handler, list):
-                    args = handler[1:]
-                    handler = handler[0]
-                self.connect_child(widget, signal, handler, *args)
+        generic = [
+            'move-tab',
+            'tab-change',
+            'tab-new',
+            'title-change',
+        ]
+        generic_signals = {sig: func for sig, func in signals.items() if sig in generic}
+
+        terminal_signals = {sig: func for sig, func in signals.items() if sig not in generic_signals}
+
+        signal_types = {
+            'Terminal': {**generic_signals, **terminal_signals},
+            'Browser': generic_signals,
+        }
+
+        for (widget_type, signals) in signal_types.items():
+            if maker.isinstance(widget, widget_type):
+                for signal in signals:
+                    args = []
+                    handler = signals[signal]
+                    if isinstance(handler, list):
+                        args = handler[1:]
+                        handler = handler[0]
+                    self.connect_child(widget, signal, handler, *args)
 
         if metadata and 'tabnum' in metadata:
             tabpos = metadata['tabnum']
@@ -388,6 +404,10 @@ class Notebook(Container, Gtk.Notebook):
             # FIXME: We only do this del and return here to avoid removing the
             # page below, which child.close() implicitly does
             del(label)
+        elif maker.isinstance(child, 'Browser'):
+            # Nothign special neeed
+            del child
+            self.remove_page(tabnum)
         elif maker.isinstance(child, 'Container'):
             dbg('child is a Container')
 
